@@ -1,0 +1,28 @@
+name: learn-github-actions
+run-name: ${{ github.actor }} is learning GitHub Actions
+on: [push]
+jobs:
+  check-bats-version:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+      - name: build with maven
+        run: mvn clean install
+
+      - name: log into docker hub
+        uses: docker/login-credentials
+        with:
+          username: jonnagaddalavaishnavi
+          password: 12345
+
+      - name: Build docker image
+        run: docker build -t jonnagaddalavaishnavi/calc:latest
+
+      - name: push docker image
+        run: docker push jonnagaddalavaishanvi/calc:latest
+
+
